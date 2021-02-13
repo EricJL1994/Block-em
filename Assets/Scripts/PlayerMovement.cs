@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,11 +7,13 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerInput input;
-    public float speed = 2;
+    [Range(1, 5)]
+    public int speed = 2;
     public GameObject gunPivot;
-
+    private Rigidbody2D rb;
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
         input = new PlayerInput();
         input.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
         input.Player.Move.canceled += ctx => Move(Vector2.zero);
@@ -19,8 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
-        //Debug.Log(direction);
-        GetComponent<Rigidbody2D>().velocity = direction * speed;
+        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
     }
 
     private void Update()

@@ -2,18 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : Spawner
 {
-    public GameObject enemyPrefab;
-
     private void Start()
     {
-        InvokeRepeating("SpawnEnemy",0f,2f);
+        InvokeRepeating("Spawn",0,2);
     }
-
-    private void SpawnEnemy()
+    public override void Spawn()
     {
-        GameObject enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
-        enemy.SetActive(true);
+        float rnd = Random.Range(0, totalChance);
+        int i = 0;
+        for (; i < objects.Length && objects[i].chance <= rnd; i++)
+        {
+            rnd -= objects[i].chance;
+        }
+
+        GameObject toSpawn = Instantiate(objects[i].spawneableGameObject, transform.position, Quaternion.identity);
+
     }
 }
