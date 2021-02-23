@@ -7,8 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     private PlayerInput input;
-    [Range(1, 5)]
-    public int speed = 2;
     public GameObject gunPivot;
     private Rigidbody2D rb;
     private void Awake()
@@ -22,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move(Vector2 direction)
     {
-        rb.velocity = new Vector2(direction.x * speed, rb.velocity.y);
+        rb.velocity = new Vector2(direction.x * Stats.instance.speed, rb.velocity.y);
     }
 
     private void Update()

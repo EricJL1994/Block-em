@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 10;
     Rigidbody2D rb;
     void Start()
     {
@@ -14,20 +13,20 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = transform.right * speed;
+        rb.velocity = transform.right * Stats.instance.bulletSpeed;
     }
 
     IEnumerator DestroyBullet()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(Stats.instance.bulletLifespan);
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            other.gameObject.GetComponent<EnemyHealth>().TakeDamage(Stats.instance.damage);
             Destroy(gameObject);
         }
     }
